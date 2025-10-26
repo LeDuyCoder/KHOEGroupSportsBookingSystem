@@ -1,6 +1,5 @@
 package khoegroupsportsbookingsystem.business.service;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,12 +13,24 @@ import khoegroupsportsbookingsystem.constants.FilePathConstants;
 import khoegroupsportsbookingsystem.model.Booking;
 
 /**
+ * Lớp {@code BookingManager} chịu trách nhiệm quản lý danh sách đặt sân (Booking)
+ * trong hệ thống KHOE Group Sports Booking System.
+ * <p>
+ * Dữ liệu được lưu trữ trong file theo đường dẫn được định nghĩa tại
+ * {@link khoegroupsportsbookingsystem.constants.FilePathConstants#BOOKING_INFO_FILE}.
+ * </p>
  *
- * @author Duyga
+ * @author Lê Hữu Duy
  */
 public class BookingManager {
     private Map<String, Booking> mapBooking = new HashMap<>();
    
+    /**
+     * Đọc dữ liệu booking từ file .dat và nạp vào map.
+     *
+     * @return {@code true} nếu đọc file thành công, {@code false} nếu file không tồn tại
+     *         hoặc xảy ra lỗi khi đọc.
+     */
     private boolean loadBookings(){
         File file = new File(FilePathConstants.BOOKING_INFO_FILE);
         if(!file.exists()){
@@ -35,6 +46,11 @@ public class BookingManager {
         }
     }
     
+    /**
+     * Ghi toàn bộ dữ liệu booking trong map ra file .dat.
+     *
+     * @return {@code true} nếu ghi thành công, {@code false} nếu xảy ra lỗi khi ghi file.
+     */
     private boolean saveBookings(){
         File file = new File(FilePathConstants.BOOKING_INFO_FILE);
         try {
@@ -48,14 +64,31 @@ public class BookingManager {
         return true;
     }
     
+    /**
+     * Lấy thông tin một booking theo mã định danh.
+     *
+     * @param bookingId mã đặt sân cần tìm
+     * @return đối tượng {@link Booking} nếu tồn tại, ngược lại trả về {@code null}.
+     */
     private Booking getBooking(String bookingId){
         return mapBooking.get(bookingId);
     }
     
+    /**
+     * Lấy toàn bộ danh sách các booking hiện có trong hệ thống.
+     *
+     * @return một {@code Collection} chứa tất cả các {@link Booking}.
+     */
     private Collection<Booking> getAllBooking(){
         return mapBooking.values();
     }
     
+    /**
+     * Xóa một booking khỏi danh sách theo mã định danh.
+     *
+     * @param bookingId mã đặt sân cần xóa
+     * @return {@code true} nếu xóa thành công, {@code false} nếu booking không tồn tại.
+     */
     private boolean deleteBooking(String bookingId){
         if(mapBooking.remove(bookingId) != null){
             return true;
