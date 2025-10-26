@@ -31,7 +31,7 @@ public class BookingManager {
      * @return {@code true} nếu đọc file thành công, {@code false} nếu file không tồn tại
      *         hoặc xảy ra lỗi khi đọc.
      */
-    private boolean loadBookings(){
+    public boolean loadBookings(){
         File file = new File(FilePathConstants.BOOKING_INFO_FILE);
         if(!file.exists()){
             return false;
@@ -51,7 +51,7 @@ public class BookingManager {
      *
      * @return {@code true} nếu ghi thành công, {@code false} nếu xảy ra lỗi khi ghi file.
      */
-    private boolean saveBookings(){
+    public boolean saveBookings(){
         File file = new File(FilePathConstants.BOOKING_INFO_FILE);
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
@@ -70,7 +70,7 @@ public class BookingManager {
      * @param bookingId mã đặt sân cần tìm
      * @return đối tượng {@link Booking} nếu tồn tại, ngược lại trả về {@code null}.
      */
-    private Booking getBooking(String bookingId){
+    public Booking getBooking(String bookingId){
         return mapBooking.get(bookingId);
     }
     
@@ -79,7 +79,7 @@ public class BookingManager {
      *
      * @return một {@code Collection} chứa tất cả các {@link Booking}.
      */
-    private Collection<Booking> getAllBooking(){
+    public Collection<Booking> getAllBooking(){
         return mapBooking.values();
     }
     
@@ -89,11 +89,22 @@ public class BookingManager {
      * @param bookingId mã đặt sân cần xóa
      * @return {@code true} nếu xóa thành công, {@code false} nếu booking không tồn tại.
      */
-    private boolean deleteBooking(String bookingId){
-        if(mapBooking.remove(bookingId) != null){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean deleteBooking(String bookingId){
+        return mapBooking.remove(bookingId) != null;
+    }
+    
+    
+    /**
+     * Thêm một đặt sân mới vào danh sách quản lý booking.
+     * <p>
+     * Phương thức này sẽ lưu đối tượng {@link Booking} vào map,
+     * với khóa là mã đặt sân (bookingId) để đảm bảo mỗi booking là duy nhất.
+     * Nếu mã booking đã tồn tại, dữ liệu cũ sẽ bị ghi đè.
+     * </p>
+     *
+     * @param booking đối tượng {@link Booking} cần thêm vào danh sách
+     */
+    public void addBooking(Booking booking){
+        mapBooking.put(booking.getBookingId(), booking);
     }
 }
