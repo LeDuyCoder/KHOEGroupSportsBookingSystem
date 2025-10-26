@@ -1,6 +1,7 @@
 
 package khoegroupsportsbookingsystem.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
  *
  * @author Lê Hữu Duy
  */
-public class Booking {
+public class Booking implements Serializable{
     private String bookingId;
     private String playerName;
     private FacilitySchedule facilitySchedule;
