@@ -2,8 +2,13 @@
 package khoegroupsportsbookingsystem;
 
 import java.util.Scanner;
+import khoegroupsportsbookingsystem.business.controller.BookingController;
+import khoegroupsportsbookingsystem.business.controller.FacilityController;
+import khoegroupsportsbookingsystem.business.service.BookingManager;
+import khoegroupsportsbookingsystem.business.service.FacilityManager;
 import khoegroupsportsbookingsystem.util.Acceptable;
 import khoegroupsportsbookingsystem.util.Inputter;
+import khoegroupsportsbookingsystem.view.FacilityView;
 import khoegroupsportsbookingsystem.view.MainView;
 
 /**
@@ -17,19 +22,32 @@ public class KHOEGroupSportsBookingSystem {
     public static void main(String[] args) {
         Inputter inputter = new Inputter(new Scanner(System.in));
         MainView mainView = new MainView();
-        mainView.showMenuView();
+        
+        BookingManager bookingManager = new BookingManager();
+        FacilityManager facilityManager = new FacilityManager();
+
+        BookingController bookingController = new BookingController(bookingManager);
+        FacilityController facilityController = new FacilityController(facilityManager, inputter);
+
+        FacilityView facilityView = new FacilityView(facilityController, inputter);
+
         while(LOOP){
             try {
+                mainView.showMenuView();
                 int userChosen = inputter.getIntInput("Please select an option: ", Acceptable.INTERGER_VALID);
                 switch (userChosen) {
                     case 1:
-                        System.out.println("Import Facility from CSV file selected.");
+                        if(facilityController.load()){
+                            System.out.println("Facilities & Services loaded successfully.");
+                        } else {
+                            System.out.println("Failed to load Facilities & Services.");
+                        }
                         break;
                     case 2:
-                        System.out.println("Update Facility Information selected.");
+                        facilityView.showUpdateView();
                         break;
                     case 3:
-                        System.out.println("View Facilities & Services selected.");
+                        facilityView.showAllFacilitysView();
                         break;
                     case 4:
                         System.out.println("Book a Facility / Service selected.");
