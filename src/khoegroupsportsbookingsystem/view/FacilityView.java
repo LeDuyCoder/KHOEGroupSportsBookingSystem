@@ -92,7 +92,7 @@ public class FacilityView {
                     case 3:
                         while (true) {
                             try {
-                                String newAvailabilityStart = inputter.getStringInput("Enter new availability start (dd/mm/yyyy HH:MM): ", Acceptable.DATE_VALID);
+                                String newAvailabilityStart = inputter.getStringInput("Enter new availability start (dd/mm/yyyy HH:MM): ", Acceptable.DATE_TIME_VALID);
                                 LocalDateTime localDateTimeStart = LocalDateTime.parse(
                                     DateUtil.formatToIso(newAvailabilityStart)
                                 );
@@ -124,7 +124,7 @@ public class FacilityView {
                     case 4:
                         while (true) {
                             try {
-                                String newAvailabilityEnd = inputter.getStringInput("Enter new availability end (dd/mm/yyyy HH:MM): ", Acceptable.DATE_VALID);
+                                String newAvailabilityEnd = inputter.getStringInput("Enter new availability end (dd/mm/yyyy HH:MM): ", Acceptable.DATE_TIME_VALID);
                                 LocalDateTime localDateTimeEnd = LocalDateTime.parse(
                                     DateUtil.formatToIso(newAvailabilityEnd)
                                 );
