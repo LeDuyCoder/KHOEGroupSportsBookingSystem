@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Year;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import khoegroupsportsbookingsystem.business.service.BookingManager;
 import khoegroupsportsbookingsystem.model.Booking;
+import khoegroupsportsbookingsystem.util.DateUtil;
 
 /**
  * Lớp điều khiển (Controller) chịu trách nhiệm xử lý các thao tác liên quan đến đặt sân (Booking)
@@ -157,24 +159,6 @@ public class BookingController extends BaseController{
     }
 
     /**
-     * Kiểm tra số lượng người tham gia trong lượt đặt sân mới có vượt quá sức chứa của cơ sở không.
-     *
-     * @param booking đối tượng {@link Booking} cần kiểm tra
-     * @return {@code true} nếu hợp lệ, {@code false} nếu vượt quá sức chứa
-     */
-    public boolean checkAmountValid(Booking booking){
-        Collection<Booking> listBooking = getAllBookingsByIdFacility(booking.getFacilitySchedule().getId());
-        
-        int totalBooking = 0;
-        for(Booking b : listBooking){
-            totalBooking += b.getNumberPerson();
-        }
-        
-        return totalBooking + booking.getNumberPerson() <= booking.getFacilitySchedule().getCapacity();
-    }
-    
-
-    /**
      * Thêm một lượt đặt sân mới vào hệ thống sau khi kiểm tra sức chứa của cơ sở.
      * <p>
      * Nếu số lượng người trong lượt đặt vượt quá sức chứa của cơ sở,
@@ -187,14 +171,121 @@ public class BookingController extends BaseController{
      * @throws Exception nếu cơ sở không đủ sức chứa để hoàn tất đặt sân
      */
     public boolean addBooking(Booking booking) throws Exception{
-        if(checkAmountValid(booking)){
-            bookingManager.addBooking(booking);
+        if(booking.getFacilitySchedule().isStatus()){
+            throw new Exception("The facility is currently unavailable for booking.");
         }else{
-            throw new Exception("Not enough capacity to complete the registration.");
+            if(booking.getNumberPerson() <= booking.getFacilitySchedule().getCapacity()){
+                bookingManager.addBooking(booking);
+                booking.getFacilitySchedule().setStatus(true);
+            }else{
+                throw new Exception("Not enough capacity to complete the registration.");
+            }
+            return true;
         }
-        return true;
     }
-    
+
+    /**
+     * Tính toán và trả về doanh thu theo từng loại sân trong một tháng cụ thể.
+     * <p>
+     * Hàm này nhận vào chuỗi tháng/năm (định dạng {@code MM/YYYY}), sau đó duyệt qua toàn bộ danh sách booking
+     * để lọc những booking có ngày nằm trong cùng tháng và năm.  
+     * Doanh thu được tính dựa trên giá của từng lịch sân ({@code FacilitySchedule})
+     * và được cộng dồn theo loại sân ({@code facilityType}).
+     * </p>
+     *
+     * @param monthYear Chuỗi tháng/năm cần thống kê, định dạng {@code MM/YYYY}.
+     * @return Bản đồ ({@code Map}) chứa tên loại sân làm khóa và tổng doanh thu làm giá trị.  
+     *         Nếu không có dữ liệu phù hợp, trả về bản đồ rỗng.
+     *
+     * @throws NumberFormatException nếu chuỗi đầu vào không đúng định dạng tháng/năm.
+     */
+    public Map<String, Integer> getMonthlyRevenue(String monthYear) {
+        Map<String, Integer> facilityRevenueMap = new HashMap<>();
+
+        try {
+            // Tách tháng / năm từ chuỗi nhập "MM/YYYY"
+            String[] parts = monthYear.split("/");
+            int month = Integer.parseInt(parts[0]);
+            int year = Integer.parseInt(parts[1]);
+
+            for (Booking booking : getAllBookings()) {
+                LocalDate bookingDate = booking.getDate().toLocalDate();
+                if (bookingDate.getMonthValue() == month && bookingDate.getYear() == year) {
+                    String facilityType = booking.getFacilitySchedule().getFacilityType();
+                    int price = booking.getFacilitySchedule().getPrice();
+
+                    if (facilityRevenueMap.containsKey(facilityType)) {
+                        int current = facilityRevenueMap.get(facilityType);
+                        facilityRevenueMap.put(facilityType, current + price);
+                    } else {
+                        facilityRevenueMap.put(facilityType, price);
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid date format (expected MM/YYYY).");
+        }
+
+        return facilityRevenueMap;
+    }
+
+    /**
+     * Thống kê số lần sử dụng dịch vụ theo loại sân trong khoảng thời gian nhất định.
+     * <p>
+     * Hàm này lọc danh sách booking theo khoảng thời gian được cung cấp
+     * (ngày bắt đầu và ngày kết thúc).  
+     * Nếu người dùng bỏ trống cả hai giá trị, hệ thống sẽ thống kê toàn bộ dữ liệu hiện có.
+     * </p>
+     *
+     * @param startDate Ngày bắt đầu lọc dữ liệu, định dạng {@code dd/MM/yyyy}.  
+     *                  Có thể để trống ("") nếu không muốn giới hạn thời gian bắt đầu.
+     * @param endDate   Ngày kết thúc lọc dữ liệu, định dạng {@code dd/MM/yyyy}.  
+     *                  Có thể để trống ("") nếu không muốn giới hạn thời gian kết thúc.
+     * @return Bản đồ ({@code Map}) chứa tên loại sân làm khóa và tổng số người sử dụng làm giá trị.  
+     *         Nếu không có dữ liệu phù hợp, trả về bản đồ rỗng.
+     *
+     * @throws DateTimeParseException nếu định dạng ngày không hợp lệ.
+     */
+    public Map<String, Integer> serviceUsageStatistics(String startDate, String endDate) {
+        Map<String, Integer> usageStatisticsMap = new HashMap<>();
+
+        LocalDate start = null;
+        LocalDate end = null;
+
+        try {
+            if (!startDate.isEmpty()) {
+                start = LocalDate.parse(DateUtil.formatDateToIso(startDate)); 
+            }
+            if (!endDate.isEmpty()) {
+                end = LocalDate.parse(DateUtil.formatDateToIso(endDate));
+            }
+        } catch (DateTimeParseException e){}
+
+        for (Booking booking : getAllBookings()) {
+            LocalDate bookingDate = booking.getDate().toLocalDate();
+
+            if (start != null && bookingDate.isBefore(start)) {
+                continue;
+            }
+            if (end != null && bookingDate.isAfter(end)) {
+                continue;
+            }
+
+            String facilityType = booking.getFacilitySchedule().getFacilityType();
+            int numberPerson = booking.getNumberPerson();
+
+            if (usageStatisticsMap.containsKey(facilityType)) {
+                int currentValue = usageStatisticsMap.get(facilityType);
+                usageStatisticsMap.put(facilityType, currentValue + numberPerson);
+            } else {
+                usageStatisticsMap.put(facilityType, numberPerson);
+            }
+        }
+
+        return usageStatisticsMap;
+    }
+
+
     /**
      * Tải dữ liệu đặt sân từ file.
      *

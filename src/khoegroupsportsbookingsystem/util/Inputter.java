@@ -32,7 +32,7 @@ public class Inputter {
         String dataUserInput = scanner.nextLine().trim();
 
         if (dataUserInput.isEmpty()) {
-            throw new Exception("Input cannot be empty!");
+            throw new IllegalArgumentException("Input cannot be empty!");
         }
 
         if (Acceptable.isValid(dataUserInput, regex)) {

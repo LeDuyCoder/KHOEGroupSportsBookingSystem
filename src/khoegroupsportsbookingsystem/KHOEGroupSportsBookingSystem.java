@@ -8,6 +8,7 @@ import khoegroupsportsbookingsystem.business.service.BookingManager;
 import khoegroupsportsbookingsystem.business.service.FacilityManager;
 import khoegroupsportsbookingsystem.util.Acceptable;
 import khoegroupsportsbookingsystem.util.Inputter;
+import khoegroupsportsbookingsystem.view.BookingView;
 import khoegroupsportsbookingsystem.view.FacilityView;
 import khoegroupsportsbookingsystem.view.MainView;
 
@@ -30,6 +31,7 @@ public class KHOEGroupSportsBookingSystem {
         FacilityController facilityController = new FacilityController(facilityManager, inputter);
 
         FacilityView facilityView = new FacilityView(facilityController, inputter);
+        BookingView bookingView = new BookingView(bookingController, inputter, facilityController);
 
         while(LOOP){
             try {
@@ -50,19 +52,23 @@ public class KHOEGroupSportsBookingSystem {
                         facilityView.showAllFacilitysView();
                         break;
                     case 4:
-                        System.out.println("Book a Facility / Service selected.");
+                        if(facilityController.getAllFacility().isEmpty()){
+                            System.out.println("No facilities available. Please import facilities first.");
+                            break;
+                        }
+                        bookingView.showBookingView();
                         break;
                     case 5:
-                        System.out.println("View Bookings selected.");
+                        bookingView.showBookingDetailsView();
                         break;
                     case 6:
-                        System.out.println("Cancel a Booking selected.");
+                        bookingView.showDeleteBookingView();
                         break;
                     case 7:
-                        System.out.println("Monthly Revenue Report selected.");
+                        bookingView.showMonthlyRevenueReportView();
                         break;
                     case 8:
-                        System.out.println("Service Usage Statistics selected.");
+                        bookingView.showServiceUsageStatsView();
                         break;
                     case 9:
                         System.out.println("Save All Data selected.");
