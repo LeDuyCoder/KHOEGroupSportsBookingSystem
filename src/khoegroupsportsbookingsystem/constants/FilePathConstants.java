@@ -9,7 +9,8 @@ package khoegroupsportsbookingsystem.constants;
  * </p>
  * 
  * <ul>
- *   <li>{@link #BRAND_FILE}: Đường dẫn đến file lưu thông tin các hãng xe.</li>
+ *   <li>{@link #FACILITY_SCHEDULE_FILE}: Đường dẫn đến file lưu thông tin các facility schedule.</li>
+ *      <li>{@link #BOOKING_INFO_FILE}: Đường dẫn đến file lưu thông tin các booking.</li>
  * </ul>
  * 
  * @author Lê Hữu Duy

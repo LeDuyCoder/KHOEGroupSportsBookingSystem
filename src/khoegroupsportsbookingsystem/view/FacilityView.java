@@ -9,6 +9,13 @@ import khoegroupsportsbookingsystem.util.Acceptable;
 import khoegroupsportsbookingsystem.util.DateUtil;
 import khoegroupsportsbookingsystem.util.Inputter;
 
+/**
+ * Lớp {@code FacilityView} dùng để hiển thị và cập nhật thông tin cơ sở (Facility) trên giao diện console.
+ * 
+ * <p>Sử dụng {@link FacilityController} để thao tác dữ liệu và {@link Inputter} để nhập liệu hợp lệ.
+ * 
+ * @author Lê Hữu Duy
+ */
 public class FacilityView {
     private final FacilityController facilityController;
     private final Inputter inputter;
@@ -18,7 +25,12 @@ public class FacilityView {
         this.inputter = inputter;
     }
 
-
+    /**
+     * Hiển thị giao diện console cho phép người dùng cập nhật thông tin cơ sở.
+     * 
+     * <p>Người dùng có thể thay đổi địa điểm, sức chứa hoặc thời gian hoạt động.
+     * Hệ thống kiểm tra hợp lệ dữ liệu nhập và đảm bảo thời gian bắt đầu – kết thúc cách nhau ít nhất 30 phút.
+    */
     public void showUpdateView(){
         try {
             String facilityId = inputter.getStringInput("input facility id: ", Acceptable.STRING_VALID);
@@ -154,6 +166,13 @@ public class FacilityView {
         }
     }
 
+    
+    /**
+     * Hiển thị danh sách tất cả cơ sở hiện có dưới dạng bảng trong console.
+     * 
+     * <p>Thông tin gồm: mã cơ sở, tên, loại, vị trí, sức chứa và thời gian hoạt động.
+     * Dừng lại chờ người dùng nhấn phím để tiếp tục.
+     */
     public void showAllFacilitysView(){
         Collection<FacilitySchedule> listFacility = facilityController.getAllFacility();
         System.out.println("============================================== List of Facilities & Services ===========================================");

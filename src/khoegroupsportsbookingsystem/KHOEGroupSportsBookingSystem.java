@@ -13,7 +13,7 @@ import khoegroupsportsbookingsystem.view.MainView;
 
 /**
  *
- * @author Duyga
+ * @author Lê Hữu Duy
  */
 public class KHOEGroupSportsBookingSystem {
 
