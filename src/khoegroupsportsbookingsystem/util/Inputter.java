@@ -68,4 +68,8 @@ public class Inputter {
             throw new Exception("Not matches with regex");
         }
     }
+
+    public String getStringWithoutRegex(){
+        return this.scanner.nextLine();
+    }
 }
