@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import khoegroupsportsbookingsystem.business.service.BookingManager;
+import khoegroupsportsbookingsystem.business.service.FacilityManager;
 import khoegroupsportsbookingsystem.model.Booking;
+import khoegroupsportsbookingsystem.model.FacilitySchedule;
 import khoegroupsportsbookingsystem.util.DateUtil;
 
 /**
@@ -26,16 +28,20 @@ import khoegroupsportsbookingsystem.util.DateUtil;
  */
 public class BookingController extends BaseController{
     private final BookingManager bookingManager;
+    private final BookingManager bookingManagerOrigin;
+    private final FacilityManager facilityManager;
 
     /**
      * Khởi tạo {@code BookingController} với {@link BookingManager} được truyền vào.
      *
      * @param bookingManager đối tượng quản lý dữ liệu booking
      */
-    public BookingController(BookingManager bookingManager) {
+    public BookingController(BookingManager bookingManager, BookingManager bookingManagerOrigin, FacilityManager facilityManager) {
         this.bookingManager = bookingManager;
+        this.bookingManagerOrigin = bookingManagerOrigin;
+        this.facilityManager = facilityManager;
     }
-    
+
     /**
      * Lấy danh sách toàn bộ lượt đặt sân hiện có.
      *
@@ -72,6 +78,8 @@ public class BookingController extends BaseController{
      * @return {@code true} nếu xóa thành công, {@code false} nếu không tìm thấy mã đặt sân
      */
     public boolean deleteBooking(String bookingId){
+        Booking booking = getBooking(bookingId);
+        facilityManager.getFacility(booking.getFacilityId()).setStatus(false);
         return bookingManager.deleteBooking(bookingId);
     }
     
@@ -102,7 +110,8 @@ public class BookingController extends BaseController{
         Collection<Booking> bookings = getAllBookings();
         List<Booking> filterBookingsByIdFacility = new ArrayList<>();
         for(Booking booking : bookings){
-            if(booking.getFacilitySchedule().getId().equalsIgnoreCase(idFacility)){
+            FacilitySchedule facilitySchedule = facilityManager.getFacility(booking.getFacilityId());
+            if(facilitySchedule.getId().equalsIgnoreCase(idFacility)){
                 filterBookingsByIdFacility.add(booking);
             }
         }
@@ -124,8 +133,10 @@ public class BookingController extends BaseController{
                 bookingDate.getMonthValue() != month.getValue()) {
                 continue;
             }
-            String facilityType = booking.getFacilitySchedule().getFacilityType();
-            int price = booking.getFacilitySchedule().getPrice();
+
+            FacilitySchedule facilitySchedule = facilityManager.getFacility(booking.getFacilityId());
+            String facilityType = facilitySchedule.getFacilityType();
+            int price = facilitySchedule.getPrice();
             if (revenueMap.containsKey(facilityType)) {
                 int currentRevenue = revenueMap.get(facilityType);
                 revenueMap.put(facilityType, currentRevenue + price);
@@ -144,9 +155,9 @@ public class BookingController extends BaseController{
     public Map<String, Integer> serviceUsageStatistics(){
         Map<String, Integer> usageStatisticsMap = new HashMap<>();
         for (Booking booking : getAllBookings()) {
-            
-            String facilityType = booking.getFacilitySchedule().getFacilityType();
-            int price = booking.getFacilitySchedule().getPrice();
+            FacilitySchedule facilitySchedule = facilityManager.getFacility(booking.getFacilityId());
+            String facilityType = facilitySchedule.getFacilityType();
+            int price = facilitySchedule.getPrice();
             if (usageStatisticsMap.containsKey(facilityType)) {
                 int currentRevenue = usageStatisticsMap.get(facilityType);
                 usageStatisticsMap.put(facilityType, currentRevenue + price);
@@ -171,12 +182,13 @@ public class BookingController extends BaseController{
      * @throws Exception nếu cơ sở không đủ sức chứa để hoàn tất đặt sân
      */
     public boolean addBooking(Booking booking) throws Exception{
-        if(booking.getFacilitySchedule().isStatus()){
+        FacilitySchedule facilitySchedule = facilityManager.getFacility(booking.getFacilityId());
+        if(facilitySchedule.isStatus()){
             throw new Exception("The facility is currently unavailable for booking.");
         }else{
-            if(booking.getNumberPerson() <= booking.getFacilitySchedule().getCapacity()){
+            if(booking.getNumberPerson() <= facilitySchedule.getCapacity()){
                 bookingManager.addBooking(booking);
-                booking.getFacilitySchedule().setStatus(true);
+                facilitySchedule.setStatus(true);
             }else{
                 throw new Exception("Not enough capacity to complete the registration.");
             }
@@ -210,9 +222,11 @@ public class BookingController extends BaseController{
 
             for (Booking booking : getAllBookings()) {
                 LocalDate bookingDate = booking.getDate().toLocalDate();
+
                 if (bookingDate.getMonthValue() == month && bookingDate.getYear() == year) {
-                    String facilityType = booking.getFacilitySchedule().getFacilityType();
-                    int price = booking.getFacilitySchedule().getPrice();
+                    FacilitySchedule facilitySchedule = facilityManager.getFacility(booking.getFacilityId());
+                    String facilityType = facilitySchedule.getFacilityType();
+                    int price = facilitySchedule.getPrice();
 
                     if (facilityRevenueMap.containsKey(facilityType)) {
                         int current = facilityRevenueMap.get(facilityType);
@@ -271,7 +285,8 @@ public class BookingController extends BaseController{
                 continue;
             }
 
-            String facilityType = booking.getFacilitySchedule().getFacilityType();
+            FacilitySchedule facilitySchedule = facilityManager.getFacility(booking.getFacilityId());
+            String facilityType = facilitySchedule.getFacilityType();
             int numberPerson = booking.getNumberPerson();
 
             if (usageStatisticsMap.containsKey(facilityType)) {
@@ -292,8 +307,8 @@ public class BookingController extends BaseController{
      * @return {@code true} nếu tải thành công, {@code false} nếu lỗi
      */
     @Override
-    boolean load() {
-        return bookingManager.loadBookings();
+    public boolean load() {
+        return bookingManager.loadBookings() && bookingManagerOrigin.loadBookings();
     }
 
     /**
@@ -302,7 +317,7 @@ public class BookingController extends BaseController{
      * @return {@code true} nếu lưu thành công, {@code false} nếu lỗi
      */
     @Override
-    boolean save() {
+    public boolean save() {
         return bookingManager.saveBookings();
     }
 }

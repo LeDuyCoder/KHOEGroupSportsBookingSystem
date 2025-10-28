@@ -1,5 +1,8 @@
 package khoegroupsportsbookingsystem.model;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /**
  * Lớp biểu diễn thông tin lịch của một cơ sở thể thao trong hệ thống
  * KHOE Group Sports Booking System.
@@ -11,7 +14,7 @@ package khoegroupsportsbookingsystem.model;
  * 
  * @author Lê Hữu Duy
  */
-public class FacilitySchedule {
+public class FacilitySchedule implements Serializable{
     private String id;
     private String facilityName;
     private String facilityType;
@@ -119,7 +122,21 @@ public class FacilitySchedule {
         this.status = status;
     }
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        FacilitySchedule other = (FacilitySchedule) obj;
+        return Objects.equals(id, other.id)
+                && Objects.equals(facilityName, other.facilityName)
+                && Objects.equals(facilityType, other.facilityType)
+                && Objects.equals(location, other.location)
+                && capacity == other.capacity
+                && Objects.equals(availabilityStart, other.availabilityStart)
+                && Objects.equals(availabilityEnd, other.availabilityEnd)
+                && price == other.price
+                && status == other.status;
+    }        
     
     
 }

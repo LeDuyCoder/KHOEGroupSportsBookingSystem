@@ -17,5 +17,5 @@ package khoegroupsportsbookingsystem.constants;
  */
 public class FilePathConstants {
         public static final String FACILITY_SCHEDULE_FILE = "data/facility_schedule_Final.csv";
-        public static final String BOOKING_INFO_FILE = "data/BookingInfo.dat.txt";
+        public static final String BOOKING_INFO_FILE = "data/BookingInfo.dat";
 }

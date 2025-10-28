@@ -23,6 +23,7 @@ import khoegroupsportsbookingsystem.util.Inputter;
  */
 public class FacilityController extends BaseController {
     private final FacilityManager facilityManager;
+    private final FacilityManager facilityManagerOrigin;
     private final Inputter inputter;
 
     /**
@@ -30,8 +31,9 @@ public class FacilityController extends BaseController {
      *
      * @param facilityManager đối tượng dùng để thao tác dữ liệu cơ sở thể thao
      */
-    public FacilityController(FacilityManager facilityManager, Inputter inputter) {
+    public FacilityController(FacilityManager facilityManager, FacilityManager facilityManagerOrigin, Inputter inputter) {
         this.facilityManager = facilityManager;
+        this.facilityManagerOrigin = facilityManagerOrigin;
         this.inputter = inputter;
     }
     
@@ -105,6 +107,7 @@ public class FacilityController extends BaseController {
                         return false;
                     }else if(confirm.equalsIgnoreCase("Y")){
                         facilityManager.loadFacilitys();
+                        facilityManagerOrigin.loadFacilitys();
                         return true;
                     }
                 } catch (Exception e) {

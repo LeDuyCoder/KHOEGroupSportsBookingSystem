@@ -20,7 +20,7 @@ import khoegroupsportsbookingsystem.model.FacilitySchedule;
  * trong hệ thống KHOE Sport Booking System.
  * </p>
  */
-public class FacilityManager {
+public class FacilityManager{
     private boolean dataLoaded = false;
     
     private final Map<String, FacilitySchedule> mapFacility = new HashMap<>();
@@ -95,11 +95,11 @@ public class FacilityManager {
             }
 
             bw.flush(); // đảm bảo ghi hết dữ liệu ra file
-            System.out.println("Đã lưu dữ liệu cơ sở vật chất thành công!");
+            bw.close();
+            System.out.println("Facility data saved successfully.");
             return true;
 
         } catch (IOException e) {
-            System.out.println("Lỗi khi ghi file: " + e.getMessage());
             return false;
         }
     }
@@ -125,6 +125,11 @@ public class FacilityManager {
     
     public boolean  getDataLoaded(){
         return this.dataLoaded;
+    }
+
+    public void setMapFacility(FacilityManager facilityManager) {
+        this.mapFacility.clear();
+        this.mapFacility.putAll(facilityManager.mapFacility);
     }
 
 }

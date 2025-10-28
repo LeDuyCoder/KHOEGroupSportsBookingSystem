@@ -6,11 +6,16 @@
             <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/business/service/BookingManager.java</file>
             <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/util/Acceptable.java</file>
             <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/business/service/FacilityManager.java</file>
-            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/KHOEGroupSportsBookingSystem.java</file>
             <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/model/FacilitySchedule.java</file>
-            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/util/Inputter.java</file>
             <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/constants/FilePathConstants.java</file>
+            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/view/BookingView.java</file>
+            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/view/FacilityView.java</file>
+            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/KHOEGroupSportsBookingSystem.java</file>
+            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/business/controller/BookingController.java</file>
+            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/util/Inputter.java</file>
+            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/business/controller/SaveController.java</file>
             <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/model/Booking.java</file>
+            <file>file:/C:/Users/Duyga/OneDrive/Documents/NetBeansProjects/KHOEGroupSportsBookingSystem/src/khoegroupsportsbookingsystem/view/SaveView.java</file>
         </group>
     </open-files>
 </project-private>

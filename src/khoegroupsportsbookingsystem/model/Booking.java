@@ -3,6 +3,7 @@ package khoegroupsportsbookingsystem.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 /**
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class Booking implements Serializable{
     private String bookingId;
     private String playerName;
-    private FacilitySchedule facilitySchedule;
+    private String facilityId;
     private LocalDateTime date;
     private int numberPerson;
 
@@ -30,10 +31,10 @@ public class Booking implements Serializable{
      * @param date             ngày và giờ đặt sân
      * @param numberPerson     số lượng người tham gia
      */
-    public Booking(String bookingId, String playerName, FacilitySchedule facilitySchedule, LocalDateTime date, int numberPerson) {
+    public Booking(String bookingId, String playerName, String facilityId, LocalDateTime date, int numberPerson) {
         this.bookingId = bookingId;
         this.playerName = playerName;
-        this.facilitySchedule = facilitySchedule;
+        this.facilityId = facilityId;
         this.date = date;
         this.numberPerson = numberPerson;
     }
@@ -54,12 +55,12 @@ public class Booking implements Serializable{
         this.playerName = playerName;
     }
 
-    public FacilitySchedule getFacilitySchedule() {
-        return facilitySchedule;
+    public String getFacilityId() {
+        return facilityId;
     }
 
-    public void setFacilitySchedule(FacilitySchedule facilitySchedule) {
-        this.facilitySchedule = facilitySchedule;
+    public void setFacilityId(String facilityId) {
+        this.facilityId = facilityId;
     }
 
     public LocalDateTime getDate() {
@@ -76,5 +77,17 @@ public class Booking implements Serializable{
 
     public void setNumberPerson(int numberPerson) {
         this.numberPerson = numberPerson;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Booking other = (Booking) obj;
+        return Objects.equals(bookingId, other.bookingId)
+                && Objects.equals(playerName, other.playerName)
+                && Objects.equals(facilityId, other.facilityId)
+                && Objects.equals(date, other.date)
+                && numberPerson == other.numberPerson;
     }
 }

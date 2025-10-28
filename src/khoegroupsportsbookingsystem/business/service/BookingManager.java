@@ -34,14 +34,17 @@ public class BookingManager {
     public boolean loadBookings(){
         File file = new File(FilePathConstants.BOOKING_INFO_FILE);
         if(!file.exists()){
+            System.out.println("Booking data file does not exist.");
             return false;
         }
         
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
             mapBooking = (Map<String, Booking>) objectInputStream.readObject();
+
             return true;
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -57,6 +60,7 @@ public class BookingManager {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
             objectOutputStream.writeObject(mapBooking);
             objectOutputStream.flush();
+            objectOutputStream.close();
         } catch (IOException ex) {
             return false;
         }
@@ -106,5 +110,10 @@ public class BookingManager {
      */
     public void addBooking(Booking booking){
         mapBooking.put(booking.getBookingId(), booking);
+    }
+
+    public void setMapBooking(BookingManager bookingManager) {
+        this.mapBooking.clear();
+        this.mapBooking.putAll(bookingManager.mapBooking);
     }
 }

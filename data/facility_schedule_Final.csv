@@ -1,19 +1,19 @@
 Id,Facility Name,Facility Type,Location,Capacity,Availability Start,Availability End,Price,Status
-ASP-01,Adult Swimming Pool,Swimming Pool,Zone C - Ground Floor,30,05/11/2025 07:30,05/11/2025 08:30,400000,FALSE
-ASP-02,Adult Swimming Pool,Swimming Pool,Zone C - Ground Floor,30,06/11/2025 09:00,06/11/2025 10:00,250000,FALSE
-BC-01,Badminton Court 1,Badminton,Zone A - 2nd Floor,4,07/11/2025 08:00,07/11/2025 09:30,300000,FALSE
-BC-02,Badminton Court 2,Badminton,Zone A - 2nd Floor,4,08/11/2025 07:30,08/11/2025 09:00,250000,FALSE
-BC-03,Badminton Court 3,Badminton,Zone A - 2nd Floor,4,09/11/2025 08:00,09/11/2025 09:30,360000,FALSE
-BC-04,Badminton Court 4,Badminton,Zone A - 2nd Floor,4,10/11/2025 10:30,10/11/2025 12:00,320000,FALSE
-KSP-01,Kids Swimming Pool,Swimming Pool,Zone C - Ground Floor,20,11/11/2025 08:30,11/11/2025 10:30,450000,FALSE
-KSP-02,Kids Swimming Pool,Swimming Pool,Zone C - Ground Floor,20,11/11/2025 12:30,11/11/2025 14:30,280000,FALSE
-MFF-01,Mini Football Field,Football,Zone B - Outdoor Area,10,11/11/2025 07:30,11/11/2025 09:30,350000,FALSE
+MFF-01,Mini Football Field,Football,Zone B - Outdoor Area,10,11/11/2025 07:30,11/11/2025 09:30,350000,TRUE
+TC-01,Tennis Court 1,Tennis,Zone D - 1st Floor,2,16/11/2025 07:30,16/11/2025 09:30,200000,FALSE
 MFF-02,Mini Football Field,Football,Zone B - Outdoor Area,10,11/11/2025 10:30,11/11/2025 12:30,270000,FALSE
 MFF-03,Mini Football Field,Football,Zone B - Outdoor Area,10,11/11/2025 13:30,11/11/2025 15:30,280000,FALSE
 MFF-04,Mini Football Field,Football,Zone B - Outdoor Area,10,16/11/2025 16:00,16/11/2025 18:00,700000,FALSE
-TC-01,Tennis Court 1,Tennis,Zone D - 1st Floor,2,16/11/2025 07:30,16/11/2025 09:30,200000,FALSE
-TC-02,Tennis Court 2,Tennis,Zone D - 1st Floor,2,16/11/2025 07:30,16/11/2025 09:30,370000,FALSE
-TC-03,Tennis Court 3,Tennis,Zone D - 1st Floor,2,16/11/2025 07:30,16/11/2025 09:30,400000,FALSE
-TC-04,Tennis Court 4,Tennis,Zone D - 1st Floor,2,16/11/2025 10:30,16/11/2025 01:30,450000,FALSE
+BC-01,Badminton Court 1,Badminton,Zone A - 2nd Floor,4,07/11/2025 08:00,07/11/2025 09:30,300000,TRUE
+BC-03,Badminton Court 3,Badminton,Zone A - 2nd Floor,4,09/11/2025 08:00,09/11/2025 09:30,360000,FALSE
+BC-02,Badminton Court 2,Badminton,Zone A - 2nd Floor,4,08/11/2025 07:30,08/11/2025 09:00,250000,FALSE
+ASP-02,Adult Swimming Pool,Swimming Pool,Zone C - Ground Floor,30,06/11/2025 09:00,06/11/2025 10:00,250000,FALSE
+ASP-01,Adult Swimming Pool,Swimming Pool,Zone C - Ground Floor,30,05/11/2025 07:30,05/11/2025 08:30,400000,FALSE
+BC-04,Badminton Court 4,Badminton,Zone A - 2nd Floor,4,10/11/2025 10:30,10/11/2025 12:00,320000,FALSE
+KSP-01,Kids Swimming Pool,Swimming Pool,Zone C - Ground Floor,20,11/11/2025 08:30,11/11/2025 10:30,450000,FALSE
+KSP-02,Kids Swimming Pool,Swimming Pool,Zone C - Ground Floor,20,11/11/2025 12:30,11/11/2025 14:30,280000,FALSE
 TTA-01,Table Tennis Area 1,Table Tennis,Zone E - Ground Floor,2,16/11/2025 07:30,16/11/2025 08:30,420000,FALSE
 TTA-02,Table Tennis Area 2,Table Tennis,Zone E - Ground Floor,2,16/11/2025 09:30,16/11/2025 11:30,270000,FALSE
+TC-04,Tennis Court 4,Tennis,Zone D - 1st Floor,2,16/11/2025 10:30,16/11/2025 01:30,450000,FALSE
+TC-02,Tennis Court 2,Tennis,Zone D - 1st Floor,2,16/11/2025 07:30,16/11/2025 09:30,370000,TRUE
+TC-03,Tennis Court 3,Tennis,Zone D - 1st Floor,2,16/11/2025 07:30,16/11/2025 09:30,400000,TRUE

@@ -4,6 +4,7 @@ package khoegroupsportsbookingsystem;
 import java.util.Scanner;
 import khoegroupsportsbookingsystem.business.controller.BookingController;
 import khoegroupsportsbookingsystem.business.controller.FacilityController;
+import khoegroupsportsbookingsystem.business.controller.SaveController;
 import khoegroupsportsbookingsystem.business.service.BookingManager;
 import khoegroupsportsbookingsystem.business.service.FacilityManager;
 import khoegroupsportsbookingsystem.util.Acceptable;
@@ -11,6 +12,7 @@ import khoegroupsportsbookingsystem.util.Inputter;
 import khoegroupsportsbookingsystem.view.BookingView;
 import khoegroupsportsbookingsystem.view.FacilityView;
 import khoegroupsportsbookingsystem.view.MainView;
+import khoegroupsportsbookingsystem.view.SaveView;
 
 /**
  *
@@ -25,13 +27,18 @@ public class KHOEGroupSportsBookingSystem {
         MainView mainView = new MainView();
         
         BookingManager bookingManager = new BookingManager();
+        BookingManager bookingManagerOrigin = new BookingManager();
         FacilityManager facilityManager = new FacilityManager();
+        FacilityManager facilityManagerOrigin = new FacilityManager();
 
-        BookingController bookingController = new BookingController(bookingManager);
-        FacilityController facilityController = new FacilityController(facilityManager, inputter);
+        BookingController bookingController = new BookingController(bookingManager, bookingManagerOrigin, facilityManager);
+        FacilityController facilityController = new FacilityController(facilityManager, facilityManagerOrigin, inputter);
+        SaveController saveController = new SaveController(bookingManager, bookingManagerOrigin, facilityManager, facilityManagerOrigin);
 
         FacilityView facilityView = new FacilityView(facilityController, inputter);
         BookingView bookingView = new BookingView(bookingController, inputter, facilityController);
+        SaveView saveView = new SaveView(saveController, inputter);
+        
 
         while(LOOP){
             try {
@@ -40,6 +47,7 @@ public class KHOEGroupSportsBookingSystem {
                 switch (userChosen) {
                     case 1:
                         if(facilityController.load()){
+                            bookingController.load();
                             System.out.println("Facilities & Services loaded successfully.");
                         } else {
                             System.out.println("Failed to load Facilities & Services.");
@@ -71,10 +79,18 @@ public class KHOEGroupSportsBookingSystem {
                         bookingView.showServiceUsageStatsView();
                         break;
                     case 9:
-                        System.out.println("Save All Data selected.");
+                        saveView.showSaveView();
                         break;
                     case 10:
-                        System.out.println("Exiting the system. Goodbye!");
+                        if(saveController.isChanged()){
+                            String confirm = inputter.getStringInput("Data has changed. Do you want to save changes before exiting? (Y/N): ", Acceptable.CONFIRM_VALID);
+                            if(confirm.equalsIgnoreCase("Y")){
+                                saveController.saveChanges();
+                                System.out.println("Data saved successfully.");
+                            } else {
+                                System.out.println("Changes were not saved.");
+                            }
+                        }
                         LOOP = false;
                         break;
                     default:

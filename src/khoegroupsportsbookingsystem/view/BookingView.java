@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
 import khoegroupsportsbookingsystem.business.controller.BookingController;
 import khoegroupsportsbookingsystem.business.controller.FacilityController;
 import khoegroupsportsbookingsystem.model.Booking;
@@ -81,7 +80,7 @@ public class BookingView {
             }
         }
 
-        Booking booking = new Booking(RandomUtil.generateRandomDigits(), namePlayer, facility, bookingDateTime, numberPerson);
+        Booking booking = new Booking(RandomUtil.generateRandomDigits(), namePlayer, facility.getId(), bookingDateTime, numberPerson);
         try {
             bookingController.addBooking(booking);
             System.out.println("Booking successful!");
@@ -103,10 +102,13 @@ public class BookingView {
         String date;
         while (true) { 
             try {
-                date = inputter.getStringInput("Enter booking date (YYYY-MM-DD): ", Acceptable.DATE_VALID);
+                date = inputter.getStringInput("Enter booking date (DD/MM/YYYY): ", Acceptable.DATE_VALID);
                 break;
             } catch (IllegalArgumentException iae) {
-                date = LocalDate.now().toString();
+                date = LocalDate.now().getDayOfMonth() + "/" 
+                            + LocalDate.now().getMonthValue() + "/" 
+                            + LocalDate.now().getYear();
+
                 break;
             }
             catch (Exception e) {
@@ -130,8 +132,10 @@ public class BookingView {
             }
         });
 
-        filteredBookings.sort((b1, b2) -> b1.getDate().compareTo(b2.getDate()));
-        
+        System.out.println("===================================================================================");
+        //show booking date
+        System.out.println("Bookings on " + date);
+
         System.out.println("==================================== Booking List =================================");
         System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n",
                 "Time", "Facility", "User", "NumberPerson");
@@ -143,9 +147,10 @@ public class BookingView {
         }
 
         for (Booking booking : bookings) {
+            FacilitySchedule facilitySchedule = facilityController.getFacility(booking.getFacilityId());
             System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n",
                     booking.getDate().toLocalTime().getHour() + ":" + booking.getDate().toLocalTime().getMinute(),
-                    booking.getFacilitySchedule().getFacilityName(),
+                    facilitySchedule.getFacilityName(),
                     booking.getPlayerName(),
                     booking.getNumberPerson()
             );
@@ -201,9 +206,10 @@ public class BookingView {
         }
         Collection<Booking> bookings = bookingController.getAllBookings();
         for (Booking booking : bookings) {
+            FacilitySchedule facilitySchedule = facilityController.getFacility(booking.getFacilityId());
             if(booking.getPlayerName().equalsIgnoreCase(playerName) &&
                booking.getDate().toLocalDate().toString().equals(DateUtil.formatDateToIso(date)) &&
-               booking.getFacilitySchedule().getId().equalsIgnoreCase(facilityId)){
+               facilitySchedule.getId().equalsIgnoreCase(facilityId)){
                 try {
                     String confirmation = inputter.getStringInput("Are you sure you want to delete this booking? (Y/N): ", Acceptable.CONFIRM_VALID);
                     if(confirmation.equalsIgnoreCase("Y")){
