@@ -117,6 +117,6 @@ public class FacilityController extends BaseController {
         }
 
 
-        return facilityManager.loadFacilitys();
+        return true;
     }
 }

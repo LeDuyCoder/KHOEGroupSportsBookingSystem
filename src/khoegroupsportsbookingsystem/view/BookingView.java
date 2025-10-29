@@ -120,7 +120,8 @@ public class BookingView {
             
         List<Booking> filteredBookings = new ArrayList<>();
         for (Booking booking : bookings) {
-            if(booking.getDate().toLocalDate().toString().equals(date)){
+            if(booking.getDate().toLocalDate().toString().equals(DateUtil.formatDateToIso(date))){
+                System.out.println(booking.getDate().toString());
                 filteredBookings.add(booking);
             }
         }
@@ -141,12 +142,12 @@ public class BookingView {
                 "Time", "Facility", "User", "NumberPerson");
         System.out.println("===================================================================================");
 
-        if (bookings.isEmpty()) {
+        if (filteredBookings.isEmpty()) {
             System.out.println("No bookings available.");
             return;
         }
 
-        for (Booking booking : bookings) {
+        for (Booking booking : filteredBookings) {
             FacilitySchedule facilitySchedule = facilityController.getFacility(booking.getFacilityId());
             System.out.printf("| %-15s | %-20s | %-20s | %-15s |%n",
                     booking.getDate().toLocalTime().getHour() + ":" + booking.getDate().toLocalTime().getMinute(),

@@ -116,4 +116,17 @@ public class BookingManager {
         this.mapBooking.clear();
         this.mapBooking.putAll(bookingManager.mapBooking);
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BookingManager that = (BookingManager) obj;
+        return mapBooking.equals(that.mapBooking);
+    }
+
+    @Override
+    public int hashCode() {
+        return mapBooking.hashCode();
+    }
 }

@@ -131,5 +131,18 @@ public class FacilityManager{
         this.mapFacility.clear();
         this.mapFacility.putAll(facilityManager.mapFacility);
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        FacilityManager that = (FacilityManager) obj;
+        return mapFacility.equals(that.mapFacility);
+    }
+
+    @Override
+    public int hashCode() {
+        return mapFacility.hashCode();
+    }
 
 }

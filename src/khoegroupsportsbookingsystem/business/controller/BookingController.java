@@ -308,7 +308,9 @@ public class BookingController extends BaseController{
      */
     @Override
     public boolean load() {
-        return bookingManager.loadBookings() && bookingManagerOrigin.loadBookings();
+        bookingManager.loadBookings();
+        bookingManagerOrigin.loadBookings();
+        return true;
     }
 
     /**
